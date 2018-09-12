@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 import readline
 
 
 class SignificantFigure(object):
     def __init__(self, number):
-        self.number = number.strip()
+        self.number = str(number).strip()
         self.float = float(self.number)
         self.count = self.count_figs(self.number)
 
@@ -14,33 +15,50 @@ class SignificantFigure(object):
         return self.float
 
     def __cmp__(self, other):
+        self.other_instance(other)
         return cmp(self.float, other.float)
 
-    def __gt__(self, new):
-        return self.float > new.float
+    def __gt__(self, other):
+        self.other_instance(other)
+        return self.float > other.float
 
-    def __lt__(self, new):
-        return self.float < new.float
+    def __lt__(self, other):
+        self.other_instance(other)
+        return self.float < other.float
 
-    def __add__(self, new):
-        sum_of_sig_figs = self.float + new.float
-        return SignificantFigure(self.as_sig_fig(sum_of_sig_figs, self.lowest_count(new)))
+    def __add__(self, other):
+        self.other_instance(other)
+        sum_of_sig_figs = self.float + other.float
+        return SignificantFigure(self.as_sig_fig(sum_of_sig_figs, self.lowest_count(other)))
 
-    def __sub__(self, new):
-        sum_of_sig_figs = self.float - new.float
-        return SignificantFigure(self.as_sig_fig(sum_of_sig_figs, self.lowest_count(new)))
+    def __sub__(self, other):
+        self.other_instance(other)
+        sum_of_sig_figs = self.float - other.float
+        return SignificantFigure(self.as_sig_fig(sum_of_sig_figs, self.lowest_count(other)))
 
-    def __mul__(self, new):
-        product_of_sig_figs = self.float * new.float
-        return SignificantFigure(self.as_sig_fig(product_of_sig_figs, self.lowest_count(new)))
+    def __mul__(self, other):
+        self.other_instance(other)
+        product_of_sig_figs = self.float * other.float
+        return SignificantFigure(self.as_sig_fig(product_of_sig_figs, self.lowest_count(other)))
 
-    def __div__(self, new):
-        product_of_sig_figs = self.float / new.float
-        return SignificantFigure(self.as_sig_fig(product_of_sig_figs, self.lowest_count(new)))
+    def __div__(self, other):
+        self.other_instance(other)
+        product_of_sig_figs = self.float / other.float
+        return SignificantFigure(self.as_sig_fig(product_of_sig_figs, self.lowest_count(other)))
 
-    def lowest_count(self, new):
-        if self > new:
-            return new.count
+    def __rdiv__(self, other):
+        self.other_instance(other)
+        product_of_sig_figs = other.float / self.float
+        return SignificantFigure(self.as_sig_fig(product_of_sig_figs, self.lowest_count(other)))
+
+    def other_instance(self, other):
+        if not isinstance(other, SignificantFigure):
+            raise TypeError("%s is not a SignificantFigure" % other.__name__)
+
+    def lowest_count(self, other):
+        self.other_instance(other)
+        if self > other:
+            return other.count
         return self.count
 
     def count_figs(self, number):
@@ -111,7 +129,7 @@ def subtract_sig_figs():
 def multiply_sig_figs():
     number1 = SignificantFigure(input("Enter a number 1: "))
     number2 = SignificantFigure(input("Enter a number 2: "))
-    fig_sig_sum = number1 * number2s
+    fig_sig_sum = number1 * number2
     print("%s * %s = %s" % (number1, number2, fig_sig_sum))
 
 
