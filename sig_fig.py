@@ -136,7 +136,7 @@ def menu():
         3: ["Subtract Number", subtract_sig_figs],
         4: ["Multiply Number", multiply_sig_figs],
         5: ["Divide Number", divide_sig_figs],
-        0: ["Exit", exit_menu],
+        0: ["Exit", exit_menu]
     }
     for item in items.keys():
         print("%d. %s" % (item, items.get(item)[0]))
@@ -155,4 +155,4 @@ if __name__ == "__main__":
     try:
         menu()
     except KeyboardInterrupt:
-        exit(0)
+        exit_menu()
